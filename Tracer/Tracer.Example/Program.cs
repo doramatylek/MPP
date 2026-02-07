@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
+﻿using System;
 using System.Threading;
 using Tracer.Core;
 using Tracer.Serialization;
@@ -24,13 +23,8 @@ class Program
 
         var result = tracer.GetTraceResult();
 
-        
-        var pluginLoader = new  PluginLoader();
+        var pluginLoader = new PluginLoader();
         pluginLoader.LoadPlugins("..\\..\\..\\Plugins");
-    
-       
-     
-
 
         pluginLoader.SaveResults(result);
         Console.WriteLine("Tracing finished. Results saved.");
@@ -39,87 +33,86 @@ class Program
 
 public class ShopService
 {
-    private readonly ITracer _tracer;
+    private readonly ITracer tracer;
 
     public ShopService(ITracer tracer)
     {
-        _tracer = tracer;
+        this.tracer = tracer; 
     }
 
     public void ProcessOrder()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
 
         ValidateOrder();
         CalculatePrice();
         SaveOrder();
 
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void ValidateOrder()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
         Thread.Sleep(50);
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void CalculatePrice()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
 
         Thread.Sleep(30);
         ApplyDiscount();
 
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void ApplyDiscount()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
         Thread.Sleep(20);
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void SaveOrder()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
         Thread.Sleep(40);
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 }
 
 public class NotificationService
 {
-    private readonly ITracer _tracer;
+    private readonly ITracer tracer;
 
     public NotificationService(ITracer tracer)
     {
-        _tracer = tracer;
+        this.tracer = tracer; 
     }
 
     public void SendEmailNotification()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
 
         BuildEmail();
         SendEmail();
 
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void BuildEmail()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
         Thread.Sleep(25);
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 
     private void SendEmail()
     {
-        _tracer.StartTrace();
+        tracer.StartTrace();
         Thread.Sleep(35);
-        _tracer.StopTrace();
+        tracer.StopTrace();
     }
 }
-

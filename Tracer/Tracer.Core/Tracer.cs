@@ -7,10 +7,10 @@ namespace Tracer.Core
 {
     public class ExecutionTracer : ITracer
     {
-        // Словарь потоков с результатами
+      
         private Dictionary<int, ThreadInfo> Threads { get; set; }
 
-        // Отдельный стек методов для каждого потока
+       
         private ThreadLocal<Stack<MethodInfo>> Methods { get; set; }
 
         public ExecutionTracer()
@@ -21,7 +21,7 @@ namespace Tracer.Core
 
         public void StartTrace()
         {
-            // Определяем текущий метод
+            
             StackFrame frame = new StackFrame(1, false);
             var method = frame.GetMethod();
 
@@ -31,10 +31,8 @@ namespace Tracer.Core
                 ClassName = method?.DeclaringType?.Name ?? "Unknown"
             };
 
-            // Пушим метод в стек текущего потока
             Methods.Value.Push(methodInfo);
 
-            // Запускаем таймер
             methodInfo.Start();
         }
 
@@ -48,18 +46,15 @@ namespace Tracer.Core
                 throw new InvalidOperationException($"StopTrace called without StartTrace in thread {threadId}");
             }
 
-            // Достаём метод из стека
             MethodInfo methodInfo = stack.Pop();
             methodInfo.Stop();
 
             if (stack.Count > 0)
             {
-                // Есть родительский метод в стеке — добавляем как дочерний
                 stack.Peek().AddChildMethod(methodInfo);
             }
             else
             {
-                // Нет родителя — это корневой метод
                 if (!Threads.TryGetValue(threadId, out ThreadInfo threadInfo))
                 {
                     threadInfo = new ThreadInfo { Id = threadId };

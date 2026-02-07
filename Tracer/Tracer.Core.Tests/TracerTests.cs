@@ -8,29 +8,29 @@ namespace Tracer.Core.Tests
     [TestFixture]
     public class TracerTests
     {
-        private ExecutionTracer _tracer;
+        private ExecutionTracer tracer;
 
         [SetUp]
         public void Setup()
         {
-            _tracer = new ExecutionTracer();
+            tracer = new ExecutionTracer();
         }
 
         [Test]
         public void Tracer_ShouldCreateInstance()
         {
-            Assert.That(_tracer, Is.Not.Null);
+            Assert.That(tracer, Is.Not.Null);
         }
 
         [Test]
         public void StartTrace_ShouldRecordMethod()
         {
        
-            _tracer.StartTrace();
+            tracer.StartTrace();
             Thread.Sleep(50);
-            _tracer.StopTrace();
+            tracer.StopTrace();
 
-            var result = _tracer.GetTraceResult();
+            var result = tracer.GetTraceResult();
 
             
             Assert.Multiple(() =>
@@ -45,16 +45,16 @@ namespace Tracer.Core.Tests
         public void NestedMethods_ShouldBeRecorded()
         {
             
-            _tracer.StartTrace(); 
+            tracer.StartTrace(); 
             Thread.Sleep(10);
 
-            _tracer.StartTrace(); 
+            tracer.StartTrace(); 
             Thread.Sleep(20);
-            _tracer.StopTrace(); 
+            tracer.StopTrace(); 
 
-            _tracer.StopTrace();
+            tracer.StopTrace();
 
-            var result = _tracer.GetTraceResult();
+            var result = tracer.GetTraceResult();
             var outerMethod = result.Threads[0].RootMethods[0];
 
            
@@ -75,18 +75,18 @@ namespace Tracer.Core.Tests
           
             var thread1 = new Thread(() =>
             {
-                _tracer.StartTrace();
+                tracer.StartTrace();
                 Thread.Sleep(30);
-                _tracer.StopTrace();
-                results.Add(_tracer.GetTraceResult());
+                tracer.StopTrace();
+                results.Add(tracer.GetTraceResult());
             });
 
             var thread2 = new Thread(() =>
             {
-                _tracer.StartTrace();
+                tracer.StartTrace();
                 Thread.Sleep(50);
-                _tracer.StopTrace();
-                results.Add(_tracer.GetTraceResult());
+                tracer.StopTrace();
+                results.Add(tracer.GetTraceResult());
             });
 
             thread1.Start();
@@ -95,7 +95,7 @@ namespace Tracer.Core.Tests
             thread1.Join();
             thread2.Join();
 
-            var finalResult = _tracer.GetTraceResult();
+            var finalResult = tracer.GetTraceResult();
 
             Assert.Multiple(() =>
             {
@@ -113,11 +113,11 @@ namespace Tracer.Core.Tests
 
             int delay = 100;
 
-            _tracer.StartTrace();
+            tracer.StartTrace();
             Thread.Sleep(delay);
-            _tracer.StopTrace();
+            tracer.StopTrace();
 
-            var result = _tracer.GetTraceResult();
+            var result = tracer.GetTraceResult();
             var methodTime = result.Threads[0].RootMethods[0].Time;
 
             Assert.That(methodTime, Is.InRange(delay * 0.9, delay * 1.1),
@@ -127,7 +127,7 @@ namespace Tracer.Core.Tests
         [Test]
         public void StopTrace_WithoutStart_ShouldNotThrow()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _tracer.StopTrace());
+            var ex = Assert.Throws<InvalidOperationException>(() => tracer.StopTrace());
         }
 
         [Test]
@@ -135,25 +135,25 @@ namespace Tracer.Core.Tests
         public void ComplexNesting_ShouldWorkCorrectly()
         {
 
-            _tracer.StartTrace(); 
+            tracer.StartTrace(); 
             Thread.Sleep(10);
 
-            _tracer.StartTrace();
+            tracer.StartTrace();
             Thread.Sleep(20);
 
-            _tracer.StartTrace(); 
+            tracer.StartTrace(); 
             Thread.Sleep(30);
-            _tracer.StopTrace(); 
+            tracer.StopTrace(); 
 
-            _tracer.StopTrace(); 
+            tracer.StopTrace(); 
 
-            _tracer.StartTrace(); 
+            tracer.StartTrace(); 
             Thread.Sleep(40);
-            _tracer.StopTrace(); 
+            tracer.StopTrace(); 
 
-            _tracer.StopTrace(); 
+            tracer.StopTrace(); 
 
-            var result = _tracer.GetTraceResult();
+            var result = tracer.GetTraceResult();
             var rootMethod = result.Threads[0].RootMethods[0];
 
    
