@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Xml;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Tracer.Core;
 using Tracer.Serialization.Abstractions;
 

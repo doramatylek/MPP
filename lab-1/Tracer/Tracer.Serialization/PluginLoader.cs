@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Tracer.Core;
 using Tracer.Serialization.Abstractions;
 
@@ -26,11 +22,11 @@ namespace Tracer.Serialization
             {
                 try
                 {
-                    var assembly = Assembly.LoadFrom(dll);
+                    Assembly assembly = Assembly.LoadFrom(dll);
 
                     foreach (var type in assembly.GetTypes()
                         .Where(t => typeof(ITraceResultSerializer).IsAssignableFrom(t)
-                                 && t.IsClass && !t.IsAbstract))
+                                 && t.IsClass))
                     {
                         if (Activator.CreateInstance(type) is ITraceResultSerializer plugin)
                         {
