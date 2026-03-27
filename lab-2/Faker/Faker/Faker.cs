@@ -17,7 +17,7 @@ namespace FakerLib
     {
         private readonly Random _random = new();
         private readonly List<IValueGenerator> _generators = new();
-        private readonly Dictionary<Type, int> _creationStack = new();
+        private readonly HashSet<Type> _creationStack = new();
         private readonly FakerConfig _config;
 
         public Faker(FakerConfig config = null)
@@ -40,10 +40,10 @@ namespace FakerLib
 
         public object Create(Type type)
         {
-            if (_creationStack.ContainsKey(type))
+            if (_creationStack.Contains(type))
                 return GetDefaultValue(type);
 
-            _creationStack[type] = 1;
+            _creationStack.Add(type);
 
             var context = new GeneratorContext(_random, this);
 
