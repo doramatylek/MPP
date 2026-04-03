@@ -29,12 +29,16 @@ public abstract class FileSystemNode : INotifyPropertyChanged
     public double Percentage
     {
         get => _percentage;
-        set { _percentage = value; OnPropertyChanged(); }
+        set 
+        { 
+            _percentage = value; 
+            OnPropertyChanged(); 
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        PropertyChanged?.Invoke(this, new (name));
 }
 
 public class FileNode : FileSystemNode { }

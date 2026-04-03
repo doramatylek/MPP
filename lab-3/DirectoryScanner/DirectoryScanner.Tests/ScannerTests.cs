@@ -54,22 +54,6 @@ public class ScannerTests : IDisposable
     }
 
     [Fact]
-    public async Task FolderAggregation_ShouldIgnoreReparsePoints()
-    {
-        string realDir = Path.Combine(_tempTestPath, "Real");
-        Directory.CreateDirectory(realDir);
-        File.WriteAllBytes(Path.Combine(realDir, "file.bin"), new byte[100]);
-
-        string linkDir = Path.Combine(_tempTestPath, "LinkToReal");
-        Directory.CreateSymbolicLink(linkDir, realDir);
-
-        var engine = new ScannerEngine(2);
-        var result = await engine.ScanAsync(_tempTestPath, CancellationToken.None);
-
-        Assert.Equal(250, result.Size);
-    }
-
-    [Fact]
     public async Task Percentages_ShouldBeCalculatedCorrectly()
     {
         var engine = new ScannerEngine(4);

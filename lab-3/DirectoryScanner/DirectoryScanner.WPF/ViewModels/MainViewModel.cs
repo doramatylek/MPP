@@ -52,7 +52,7 @@ public class MainViewModel : INotifyPropertyChanged
         string selectedPath = dialog.FolderName;
         _cts = new CancellationTokenSource();
 
-        var engine = new ScannerEngine(Environment.ProcessorCount * 2);
+        var engine = new ScannerEngine(10);
 
         IsScanning = true;
         Status = $"Сканирование: {selectedPath}";
